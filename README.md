@@ -1,4 +1,4 @@
-# Your Name — AI/ML Engineer
+# Jumana — AI/ML Engineer
 
 > Replace this README with your own after setting up your site. This file is not displayed on your portfolio site — it is what visitors see when they visit your GitHub repo directly. A strong README here reinforces the professional impression your portfolio site creates.
 
