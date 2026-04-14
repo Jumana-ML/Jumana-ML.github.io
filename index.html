@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jumana Melhem — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░ STARFIELD CANVAS ░░ -->
+  <canvas id="stars"></canvas>
+
+  <!-- ░░ SOLAR SYSTEM VIEW ░░ -->
+  <div id="solar-system">
+
+    <!-- Central sun with profile picture -->
+    <div id="sun-container">
+      <div id="sun-glow-ring"></div>
+      <div id="sun">
+        <!-- Replace src with your actual profile picture URL -->
+        <img src="https://api.dicebear.com/9.x/initials/svg?seed=JM&backgroundColor=1a1a3e&textColor=a78bfa&fontSize=38" alt="Jumana Melhem" id="profile-pic" />
+      </div>
+      <div id="sun-label">
+        <h1 id="name">Jumana Melhem</h1>
+        <p id="title">AI / ML Engineer</p>
+      </div>
+    </div>
+
+    <!-- ░░ ORBITS & PLANETS ░░
+         Each .orbit-wrapper rotates around the sun.
+         Each .planet counter-rotates so its label stays upright.
+         data-panel links a planet to its content panel id.
+         data-label is used as an accessible aria-label. -->
+
+    <!-- Planet 1: Foundations -->
+    <div class="orbit-wrapper" id="orbit-1">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="foundations-panel" data-label="Foundations" aria-label="Open Foundations panel" style="--planet-color:#7c3aed; --planet-glow:#7c3aed55;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">Foundations</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Planet 2: ML & NLP -->
+    <div class="orbit-wrapper" id="orbit-2">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="mlnlp-panel" data-label="ML & NLP" aria-label="Open ML & NLP panel" style="--planet-color:#0891b2; --planet-glow:#0891b255;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">ML & NLP</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Planet 3: Retrieval & KG -->
+    <div class="orbit-wrapper" id="orbit-3">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="retrieval-panel" data-label="Retrieval & KG" aria-label="Open Retrieval & KG panel" style="--planet-color:#0d9488; --planet-glow:#0d948855;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">Retrieval & KG</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Planet 4: Deployment -->
+    <div class="orbit-wrapper" id="orbit-4">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="deployment-panel" data-label="Deployment" aria-label="Open Deployment panel" style="--planet-color:#b45309; --planet-glow:#b4530955;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">Deployment</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Planet 5: Capstone -->
+    <div class="orbit-wrapper" id="orbit-5">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="capstone-panel" data-label="Capstone" aria-label="Open Capstone panel" style="--planet-color:#be185d; --planet-glow:#be185d55;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">Capstone</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Planet 6: Contact -->
+    <div class="orbit-wrapper" id="orbit-6">
+      <div class="orbit-path"></div>
+      <div class="planet-anchor">
+        <button class="planet" data-panel="contact-panel" data-label="Contact" aria-label="Open Contact panel" style="--planet-color:#4f46e5; --planet-glow:#4f46e555;">
+          <span class="planet-icon">⬡</span>
+          <span class="planet-label">Contact</span>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /solar-system -->
+
+
+  <!-- ░░ CONTENT PANELS OVERLAY ░░ -->
+  <div id="panels-overlay" aria-hidden="true">
+
+    <!-- Back button shared across all panels -->
+    <button id="close-btn" aria-label="Back to solar system">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 10H5M5 10L10 5M5 10L10 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back
+    </button>
+
+    <!-- ─── Foundations ─── -->
+    <div id="foundations-panel" class="content-panel" role="region" aria-label="Foundations Projects">
+      <div class="panel-header" style="--accent:#7c3aed;">
+        <div class="panel-tag" style="--accent:#7c3aed;">Foundations</div>
+        <h2>Core Foundations</h2>
+        <p class="panel-subtitle">Building blocks of machine intelligence</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>This section will showcase foundational AI/ML projects. Replace this placeholder with your project cards, descriptions, links, and visuals.</p>
+      </div>
+    </div>
+
+    <!-- ─── ML & NLP ─── -->
+    <div id="mlnlp-panel" class="content-panel" role="region" aria-label="ML & NLP Projects">
+      <div class="panel-header" style="--accent:#0891b2;">
+        <div class="panel-tag" style="--accent:#0891b2;">ML & NLP</div>
+        <h2>Machine Learning & NLP</h2>
+        <p class="panel-subtitle">Language models, transformers & beyond</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>This section will showcase ML and natural language processing projects. Add your models, experiments, benchmarks, and findings here.</p>
+      </div>
+    </div>
+
+    <!-- ─── Retrieval & KG ─── -->
+    <div id="retrieval-panel" class="content-panel" role="region" aria-label="Retrieval & KG Projects">
+      <div class="panel-header" style="--accent:#0d9488;">
+        <div class="panel-tag" style="--accent:#0d9488;">Retrieval & KG</div>
+        <h2>Retrieval & Knowledge Graphs</h2>
+        <p class="panel-subtitle">Semantic search, RAG & graph intelligence</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>This section will cover retrieval-augmented generation, vector databases, and knowledge graph projects. Add your architecture diagrams and results here.</p>
+      </div>
+    </div>
+
+    <!-- ─── Deployment ─── -->
+    <div id="deployment-panel" class="content-panel" role="region" aria-label="Deployment Projects">
+      <div class="panel-header" style="--accent:#b45309;">
+        <div class="panel-tag" style="--accent:#b45309;">Deployment</div>
+        <h2>Deployment & MLOps</h2>
+        <p class="panel-subtitle">Serving models at scale, pipelines & monitoring</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>This section highlights deployment strategies, Docker/Kubernetes setups, CI/CD for ML, and monitoring dashboards. Add your infrastructure work here.</p>
+      </div>
+    </div>
+
+    <!-- ─── Capstone ─── -->
+    <div id="capstone-panel" class="content-panel" role="region" aria-label="Capstone Project">
+      <div class="panel-header" style="--accent:#be185d;">
+        <div class="panel-tag" style="--accent:#be185d;">Capstone</div>
+        <h2>Capstone Project</h2>
+        <p class="panel-subtitle">The culmination of expertise & innovation</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>This section features the flagship capstone project — the most comprehensive demonstration of skills and domain knowledge. Add your full write-up, demo, and results here.</p>
+      </div>
+    </div>
+
+    <!-- ─── Contact ─── -->
+    <div id="contact-panel" class="content-panel" role="region" aria-label="Contact">
+      <div class="panel-header" style="--accent:#4f46e5;">
+        <div class="panel-tag" style="--accent:#4f46e5;">Contact</div>
+        <h2>Get in Touch</h2>
+        <p class="panel-subtitle">Open to collaborations, research & opportunities</p>
+      </div>
+      <div class="panel-body">
+        <h3>Details will go here…</h3>
+        <p>Add your contact form, email address, LinkedIn, GitHub, and any other relevant links here.</p>
+      </div>
+    </div>
+
+  </div><!-- /panels-overlay -->
+
+  <script src="script.js"></script>
+</body>
+</html>
