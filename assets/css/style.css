@@ -155,24 +155,47 @@ html, body {
 @keyframes counterSpin  { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
 /* ── Per-Orbit & Planet Sizing ── */
-#orbit-1 { width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2); animation-duration: var(--orbit1-d); }
+#orbit-1 {
+  width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2);
+  animation-duration: var(--orbit1-d);
+  z-index: 6; /* ⬅️ الأعلى */
+}
 #orbit-1 .planet-container { animation-duration: var(--orbit1-d); }
 
-#orbit-2 { width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2); animation-duration: var(--orbit2-d); animation-delay: -5s; }
+#orbit-2 {
+  width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2);
+  animation-duration: var(--orbit2-d); animation-delay: -5s;
+  z-index: 5;
+}
 #orbit-2 .planet-container { animation-duration: var(--orbit2-d); animation-delay: -5s; }
 
-#orbit-3 { width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2); animation-duration: var(--orbit3-d); animation-delay: -11s; }
+#orbit-3 {
+  width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2);
+  animation-duration: var(--orbit3-d); animation-delay: -11s;
+  z-index: 4;
+}
 #orbit-3 .planet-container { animation-duration: var(--orbit3-d); animation-delay: -11s; }
 
-#orbit-4 { width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2); animation-duration: var(--orbit4-d); animation-delay: -8s; }
+#orbit-4 {
+  width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2);
+  animation-duration: var(--orbit4-d); animation-delay: -8s;
+  z-index: 3;
+}
 #orbit-4 .planet-container { animation-duration: var(--orbit4-d); animation-delay: -8s; }
 
-#orbit-5 { width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2); animation-duration: var(--orbit5-d); animation-delay: -20s; }
+#orbit-5 {
+  width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2);
+  animation-duration: var(--orbit5-d); animation-delay: -20s;
+  z-index: 2;
+}
 #orbit-5 .planet-container { animation-duration: var(--orbit5-d); animation-delay: -20s; }
 
-#orbit-6 { width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2); animation-duration: var(--orbit6-d); animation-delay: -33s; }
+#orbit-6 {
+  width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2);
+  animation-duration: var(--orbit6-d); animation-delay: -33s;
+  z-index: 1; /* ⬅️ الأسفل */
+}
 #orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
-
 
 /* ── Content Panels & Responsive sections ── (No significant changes needed) */
 #panels-overlay { position: fixed; ... }
