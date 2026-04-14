@@ -1,9 +1,9 @@
 /* ════════════════════════════════════════════════════
    JUMANA MELHEM — SOLAR SYSTEM PORTFOLIO
-   script.js (REVISED)
+   script.js (FINAL - JAVASCRIPT-DRIVEN CLICK DETECTION)
    ════════════════════════════════════════════════════ */
 
-// ── Starfield initialization (No changes) ──
+// ── Starfield initialization ──
 (function initStarfield() {
   const canvas = document.getElementById('stars');
   if (!canvas) return;
@@ -39,18 +39,21 @@
   draw();
 })();
 
-// ── Panel open/close logic (Revised planet selector) ──
-(function initPanels() {
+// ── ⭐️ NEW & ROBUST Panel/Click Logic ──
+(function initInteractiveSystem() {
   const solarSystem  = document.getElementById('solar-system');
   const overlay      = document.getElementById('panels-overlay');
   const closeBtn     = document.getElementById('close-btn');
-  // ⭐️ REVISED: We now target the container, which is the clickable element.
   const planetContainers = document.querySelectorAll('.planet-container');
 
-  if (!solarSystem || !overlay || !closeBtn || planetContainers.length === 0) return;
+  if (!solarSystem || !overlay || !closeBtn || planetContainers.length === 0) {
+    console.error("One or more essential elements are missing.");
+    return;
+  }
 
   let activePanelEl = null;
 
+  // --- Panel Management Functions (open/close) ---
   function openPanel(panelId) {
     const panel = document.getElementById(panelId);
     if (!panel) return;
@@ -72,33 +75,60 @@
     solarSystem.classList.remove('hidden');
     const panel = activePanelEl;
     activePanelEl = null;
-    panel.addEventListener('transitionend', function handler() {
-      panel.removeEventListener('transitionend', handler);
+    panel.addEventListener('transitionend', () => {
       panel.classList.remove('active');
     }, { once: true });
     overlay.classList.remove('visible');
     overlay.setAttribute('aria-hidden', 'true');
   }
 
-  planetContainers.forEach(container => {
-    container.addEventListener('click', () => {
-      openPanel(container.dataset.panel);
-    });
+  // --- Event Delegation and Hit Detection ---
+  solarSystem.addEventListener('click', (event) => {
+    // We only care about clicks on the solar system itself, not the panels
+    if (solarSystem.classList.contains('hidden')) {
+      return;
+    }
+
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    // Check if the click is within any planet's bounding box
+    for (const container of planetContainers) {
+      // getBoundingClientRect() gives the current position of the element on screen,
+      // even while it's animating! This is the key.
+      const rect = container.getBoundingClientRect();
+
+      // Check if click coordinates are inside the element's rectangle
+      if (
+        clickX >= rect.left &&
+        clickX <= rect.right &&
+        clickY >= rect.top &&
+        clickY <= rect.bottom
+      ) {
+        // We found a match!
+        const panelId = container.dataset.panel;
+        openPanel(panelId);
+        
+        // Stop checking other planets
+        return;
+      }
+    }
   });
 
+
+  // --- Standard Close Events ---
   closeBtn.addEventListener('click', closePanel);
   document.addEventListener('keydown', e => e.key === 'Escape' && activePanelEl && closePanel());
   overlay.addEventListener('click', e => e.target === overlay && closePanel());
+
 })();
 
 
-// ── ⭐️ NEW: Planet Sizing Logic ──
-// This function reads the `data-size` attribute from the HTML
-// and applies it to the planet image width and height.
+// ── Planet Sizing Logic (No changes) ──
 (function sizePlanets() {
   const planetImages = document.querySelectorAll('.planet-image');
   planetImages.forEach(img => {
-    const size = img.dataset.size || '50'; // Default to 50px if not set
+    const size = img.dataset.size || '50';
     img.style.width = `${size}px`;
     img.style.height = `${size}px`;
   });
