@@ -6,7 +6,7 @@ layout: default
 
 ## About
 
-I am a recent graduate in [Computer Science] from [Yarmouk University] in Jordan. I am building expertise in applied AI and ML systems through the AI.SPIRE program. I am most interested in [Machine learning, NLP, computer vision, data engineering, deployment].
+I am a recent graduate in Computer Science from Yarmouk University in Jordan. I am building expertise in applied AI and ML systems through the AI.SPIRE program. I am most interested in Machine learning, NLP, computer vision, data engineering, deployment.
 
 ---
 
@@ -113,6 +113,6 @@ I am a recent graduate in [Computer Science] from [Yarmouk University] in Jordan
 
 ## Contact
 
-- **GitHub:** [your-github-username](https://github.com/your-github-username)
-- **LinkedIn:** [your-linkedin-profile](https://linkedin.com/in/your-profile)
-- **Email:** your.email@example.com
+- **GitHub:** Jumana-ML(https://github.com/Jumana-ML)
+- **LinkedIn:** (https://www.linkedin.com/in/jumanamelhem/)
+- **Email:** DujaDark@gmail.com
