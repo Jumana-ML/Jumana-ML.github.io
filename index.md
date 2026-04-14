@@ -6,7 +6,7 @@ layout: default
 
 ## About
 
-I am a recent graduate in [Computer Science / Electrical Engineering] from [University Name] in Jordan. I am building expertise in applied AI and ML systems through the AI.SPIRE program. I am most interested in [your areas of interest — e.g., NLP, computer vision, data engineering, deployment].
+I am a recent graduate in [Computer Science] from [Yarmouk University] in Jordan. I am building expertise in applied AI and ML systems through the AI.SPIRE program. I am most interested in [Machine learning, NLP, computer vision, data engineering, deployment].
 
 ---
 
