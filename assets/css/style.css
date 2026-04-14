@@ -92,46 +92,66 @@ html, body {
 }
 
 /* ════════════════════════════════════════════════════
-   NEW & SIMPLIFIED ORBIT/PLANET LOGIC
+   FINAL RESTRUCTURED ORBIT/PLANET LOGIC
+   This separates visual paths from functional rotators.
    ════════════════════════════════════════════════════ */
 
-.orbit-wrapper {
+/* 1. Visual Paths Container (in the background) */
+#orbit-paths {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 50%;
-  animation: orbitSpin linear infinite; /* The wrapper itself spins */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Sits behind planets */
+  pointer-events: none; /* Absolutely no interaction */
 }
 
-/* This is the clickable container that holds the planet image and label */
+/* 2. Individual Visual Path Style */
+.orbit-path {
+  position: absolute;
+  width: calc(var(--radius) * 2);
+  height: calc(var(--radius) * 2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+/* 3. The logical rotator (NO BORDER) */
+.orbit-wrapper {
+  position: absolute;
+  border-radius: 50%;
+  animation: orbitSpin linear infinite;
+  z-index: 5; /* Sits in front of visual paths */
+  /* NO BORDER HERE! */
+}
+
+/* 4. The clickable planet container (same as before) */
 .planet-container {
   position: absolute;
-  top: 50%; /* Center vertically */
-  left: 0;   /* Start at the left edge of the orbit */
+  top: 50%;
+  left: 0;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  /* We add the animation here to keep the planet upright */
   animation: counterSpin linear infinite;
+  /* pointer-events: auto; is not strictly needed but good practice */
+  pointer-events: auto;
 }
 
 .planet-image {
-  max-width: none; /* Override any resets */
+  max-width: none;
   object-fit: contain;
   transition: transform 0.3s ease;
-  /* Add a glow effect using drop-shadow, works great on transparent PNGs */
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
 
 .planet-container:hover .planet-image {
   transform: scale(1.2);
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
-}
-.planet-container:focus-visible .planet-image {
-  outline: 2px solid #00bcd4;
-  outline-offset: 4px;
 }
 
 .planet-label {
@@ -148,53 +168,25 @@ html, body {
   color: #fff;
 }
 
-/* Keyframes for spinning */
+/* Keyframes for spinning (no change) */
 @keyframes orbitSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes counterSpin  { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-/* ── Per-Orbit & Planet Sizing ── */
-#orbit-1 {
-  width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2);
-  animation-duration: var(--orbit1-d);
-  z-index: 6; /* ⬅️ الأعلى */
-}
+/* ── Per-Orbit & Planet Sizing (no change to this section, but included for context) ── */
+#orbit-1 { width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2); animation-duration: var(--orbit1-d); }
 #orbit-1 .planet-container { animation-duration: var(--orbit1-d); }
 
-#orbit-2 {
-  width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2);
-  animation-duration: var(--orbit2-d); animation-delay: -5s;
-  z-index: 5;
-}
+#orbit-2 { width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2); animation-duration: var(--orbit2-d); animation-delay: -5s; }
 #orbit-2 .planet-container { animation-duration: var(--orbit2-d); animation-delay: -5s; }
 
-#orbit-3 {
-  width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2);
-  animation-duration: var(--orbit3-d); animation-delay: -11s;
-  z-index: 4;
-}
+#orbit-3 { width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2); animation-duration: var(--orbit3-d); animation-delay: -11s; }
 #orbit-3 .planet-container { animation-duration: var(--orbit3-d); animation-delay: -11s; }
 
-#orbit-4 {
-  width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2);
-  animation-duration: var(--orbit4-d); animation-delay: -8s;
-  z-index: 3;
-}
+#orbit-4 { width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2); animation-duration: var(--orbit4-d); animation-delay: -8s; }
 #orbit-4 .planet-container { animation-duration: var(--orbit4-d); animation-delay: -8s; }
 
-#orbit-5 {
-  width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2);
-  animation-duration: var(--orbit5-d); animation-delay: -20s;
-  z-index: 2;
-}
+#orbit-5 { width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2); animation-duration: var(--orbit5-d); animation-delay: -20s; }
 #orbit-5 .planet-container { animation-duration: var(--orbit5-d); animation-delay: -20s; }
 
-#orbit-6 {
-  width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2);
-  animation-duration: var(--orbit6-d); animation-delay: -33s;
-  z-index: 1; /* ⬅️ الأسفل */
-}
+#orbit-6 { width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2); animation-duration: var(--orbit6-d); animation-delay: -33s; }
 #orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
-
-/* ── Content Panels & Responsive sections ── (No significant changes needed) */
-#panels-overlay { position: fixed; ... }
-/* ... (Keep the rest of your original CSS for panels and responsive here) ... */
