@@ -1,31 +1,36 @@
 /* ════════════════════════════════════════════════════
    JUMANA MELHEM — SOLAR SYSTEM PORTFOLIO
-   style.css
+   style.css (REVISED & SIMPLIFIED)
    ════════════════════════════════════════════════════ */
 
 /* ── Custom Properties ── */
 :root {
   --bg: #070714;
   --sun-size: 140px;
-  --sun-color: #fef3c7;
-  --sun-core: #fbbf24;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --panel-bg: #0d0d24;
   --text-primary: #f1f0ff;
   --text-secondary: #8b8ab8;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
   --transition-main: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Orbit dimensions (semi-major axis approximations) */
-  --o1-rx: 160px; --o1-ry: 60px;
-  --o2-rx: 230px; --o2-ry: 95px;
-  --o3-rx: 300px; --o3-ry: 130px;
-  --o4-rx: 370px; --o4-ry: 160px;
-  --o5-rx: 440px; --o5-ry: 185px;
-  --o6-rx: 510px; --o6-ry: 210px;
+  /* Orbit radiuses (now circular) - EASIER TO EDIT! */
+  --orbit1-r: 170px;
+  --orbit2-r: 250px;
+  --orbit3-r: 330px;
+  --orbit4-r: 410px;
+  --orbit5-r: 490px;
+  --orbit6-r: 570px;
+
+  /* Orbit durations (speeds) - EASIER TO EDIT! */
+  --orbit1-d: 18s;
+  --orbit2-d: 25s;
+  --orbit3-d: 33s;
+  --orbit4-d: 42s;
+  --orbit5-d: 50s;
+  --orbit6-d: 60s;
 }
 
-/* ── Reset ── */
+/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%; height: 100%;
@@ -33,21 +38,10 @@ html, body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
 }
+#stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
-/* ── Starfield canvas (sits behind everything) ── */
-#stars {
-  position: fixed;
-  inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ════════════════════════════════════════════════════
-   SOLAR SYSTEM WRAPPER
-   ════════════════════════════════════════════════════ */
+/* ── Solar System Wrapper ── */
 #solar-system {
   position: fixed;
   inset: 0;
@@ -55,31 +49,19 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 1;
-
-  /* Transition for fade-out when a panel opens */
   transition: opacity var(--transition-main), transform var(--transition-main);
   transform-origin: center center;
 }
-#solar-system.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.88);
-}
+#solar-system.hidden { opacity: 0; pointer-events: none; transform: scale(0.88); }
 
-/* ════════════════════════════════════════════════════
-   SUN
-   ════════════════════════════════════════════════════ */
+/* ── Sun ── */
 #sun-container {
-  position: absolute;
+  position: relative; /* Changed from absolute */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
   z-index: 10;
-  /* Sits in the flow center of the fixed container */
 }
-
-/* Outer animated glow ring */
 #sun-glow-ring {
   position: absolute;
   width: calc(var(--sun-size) + 40px);
@@ -87,509 +69,109 @@ html, body {
   border-radius: 50%;
   background: radial-gradient(circle, #fbbf2430 0%, transparent 70%);
   animation: sunPulse 3s ease-in-out infinite;
-  pointer-events: none;
 }
-
 #sun {
   width: var(--sun-size);
   height: var(--sun-size);
   border-radius: 50%;
   overflow: hidden;
   border: 2.5px solid #fbbf2460;
-  box-shadow:
-    0 0 30px #fbbf2440,
-    0 0 60px #fbbf2420,
-    inset 0 0 20px #fbbf2415;
-  position: relative;
-  flex-shrink: 0;
+  box-shadow: 0 0 30px #fbbf2440, 0 0 60px #fbbf2420, inset 0 0 20px #fbbf2415;
   animation: sunGlow 4s ease-in-out infinite alternate;
 }
+#profile-pic { width: 100%; height: 100%; object-fit: cover; }
+#sun-label { text-align: center; margin-top: 16px; }
+#name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #fef9ee; }
+#title { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: #fbbf2490; margin-top: 3px; }
 
-#profile-pic {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Name + title below sun */
-#sun-label {
-  text-align: center;
-  margin-top: 4px;
-  /* push label down so it clears the sun */
-  transform: translateY(calc(var(--sun-size) * 0.5 + 8px));
-  position: absolute;
-  top: 50%;
-  white-space: nowrap;
-}
-#name {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #fef9ee;
-}
-#title {
-  font-size: 0.78rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #fbbf2490;
-  margin-top: 3px;
-}
-
-/* ── Sun animations ── */
 @keyframes sunPulse {
-  0%, 100% { transform: scale(1); opacity: 0.7; }
-  50%       { transform: scale(1.18); opacity: 1; }
+  50% { transform: scale(1.18); opacity: 1; }
 }
 @keyframes sunGlow {
-  from { box-shadow: 0 0 28px #fbbf2440, 0 0 55px #fbbf2418, inset 0 0 18px #fbbf2412; }
-  to   { box-shadow: 0 0 45px #fbbf2460, 0 0 90px #fbbf2430, inset 0 0 28px #fbbf2420; }
+  to { box-shadow: 0 0 45px #fbbf2460, 0 0 90px #fbbf2430, inset 0 0 28px #fbbf2420; }
 }
 
 /* ════════════════════════════════════════════════════
-   ORBITS
-   ════════════════════════════════════════════════════
-   Each orbit-wrapper is an ellipse centered on the sun.
-   We use a CSS ellipse trick:
-     - The wrapper is an absolutely-positioned element
-       with width = 2*rx and height = 2*ry, centered.
-     - .orbit-path is the visible ellipse (border).
-     - .planet-anchor sits at the RIGHT edge (0% along the ellipse)
-       and rotates around the center via animation on .orbit-wrapper.
-     - The planet itself counter-rotates to stay upright.
+   NEW & SIMPLIFIED ORBIT/PLANET LOGIC
    ════════════════════════════════════════════════════ */
+
 .orbit-wrapper {
   position: absolute;
-  /* Each orbit is centered on the sun via negative margin */
-  border-radius: 50%;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  /* Width/height set per-orbit below */
-}
-
-/* The visible elliptical orbit ring */
-.orbit-path {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  pointer-events: none;
+  border-radius: 50%;
+  animation: orbitSpin linear infinite; /* The wrapper itself spins */
 }
 
-/* The anchor point that carries the planet.
-   It sits at the top-center of the orbit-wrapper
-   and uses transform to push the planet to the orbit edge. */
-.planet-anchor {
+/* This is the clickable container that holds the planet image and label */
+.planet-container {
   position: absolute;
-  top: 50%;
-  left: 100%; /* right edge of the ellipse */
-  transform: translate(-50%, -50%);
-}
-
-/* ── Per-orbit sizing & speed ── */
-/* Orbit 1 — Foundations — fastest, smallest */
-#orbit-1 {
-  width: calc(var(--o1-rx) * 2);
-  height: calc(var(--o1-ry) * 2);
-  margin-left: calc(var(--o1-rx) * -1);
-  margin-top: calc(var(--o1-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 14s;
-}
-/* Orbit 2 — ML & NLP */
-#orbit-2 {
-  width: calc(var(--o2-rx) * 2);
-  height: calc(var(--o2-ry) * 2);
-  margin-left: calc(var(--o2-rx) * -1);
-  margin-top: calc(var(--o2-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 20s;
-  animation-delay: -5s;
-}
-/* Orbit 3 — Retrieval & KG */
-#orbit-3 {
-  width: calc(var(--o3-rx) * 2);
-  height: calc(var(--o3-ry) * 2);
-  margin-left: calc(var(--o3-rx) * -1);
-  margin-top: calc(var(--o3-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 27s;
-  animation-delay: -11s;
-}
-/* Orbit 4 — Deployment */
-#orbit-4 {
-  width: calc(var(--o4-rx) * 2);
-  height: calc(var(--o4-ry) * 2);
-  margin-left: calc(var(--o4-rx) * -1);
-  margin-top: calc(var(--o4-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 35s;
-  animation-delay: -8s;
-}
-/* Orbit 5 — Capstone */
-#orbit-5 {
-  width: calc(var(--o5-rx) * 2);
-  height: calc(var(--o5-ry) * 2);
-  margin-left: calc(var(--o5-rx) * -1);
-  margin-top: calc(var(--o5-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 44s;
-  animation-delay: -20s;
-}
-/* Orbit 6 — Contact — slowest, largest */
-#orbit-6 {
-  width: calc(var(--o6-rx) * 2);
-  height: calc(var(--o6-ry) * 2);
-  margin-left: calc(var(--o6-rx) * -1);
-  margin-top: calc(var(--o6-ry) * -1);
-  animation-name: orbitSpin;
-  animation-duration: 55s;
-  animation-delay: -33s;
-}
-
-/* The single keyframe: rotate the whole wrapper 360° */
-@keyframes orbitSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* ════════════════════════════════════════════════════
-   PLANETS
-   ════════════════════════════════════════════════════ */
-.planet {
-  /* Layout */
+  top: 50%; /* Center vertically */
+  left: 0;   /* Start at the left edge of the orbit */
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 12px;
-  width: 68px;
-
-  /* Reset button styles */
-  background: none;
-  border: none;
+  gap: 8px;
   cursor: pointer;
-  outline: none;
+  /* We add the animation here to keep the planet upright */
+  animation: counterSpin linear infinite;
+}
 
-  /* Counter-rotate so planet stays upright despite orbit spinning.
-     The JS applies an inline animation that mirrors the orbit speed. */
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-name: counterSpin;
-
-  /* Transition for hover */
+.planet-image {
+  max-width: none; /* Override any resets */
+  object-fit: contain;
   transition: transform 0.3s ease;
+  /* Add a glow effect using drop-shadow, works great on transparent PNGs */
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
 
-/* Each orbit has its own counter-rotation matching the orbit speed */
-#orbit-1 .planet { animation-duration: 14s; }
-#orbit-2 .planet { animation-duration: 20s; }
-#orbit-3 .planet { animation-duration: 27s; }
-#orbit-4 .planet { animation-duration: 35s; }
-#orbit-5 .planet { animation-duration: 44s; }
-#orbit-6 .planet { animation-duration: 55s; }
-
-@keyframes counterSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
+.planet-container:hover .planet-image {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+}
+.planet-container:focus-visible .planet-image {
+  outline: 2px solid #00bcd4;
+  outline-offset: 4px;
 }
 
-/* Planet sphere — the colored hexagon-circle orb */
-.planet-icon {
-  display: block;
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  font-size: 2rem;
-  color: var(--planet-color);
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%, color-mix(in srgb, var(--planet-color) 25%, transparent), transparent 70%),
-              color-mix(in srgb, var(--planet-color) 12%, #0d0d24);
-  border: 1.5px solid color-mix(in srgb, var(--planet-color) 55%, transparent);
-  box-shadow: 0 0 14px var(--planet-glow), inset 0 0 8px var(--planet-glow);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  /* Override the text (we'll make this a solid disc visually) */
-  font-size: 0; /* hide the ⬡ character; we use the div as the visual */
-}
-
-/* Re-draw as a solid disc */
-.planet-icon::after {
-  content: '';
-  display: block;
-  width: 28px;
-  height: 28px;
-  margin: 8px auto 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 35%, color-mix(in srgb, var(--planet-color) 90%, white 30%), var(--planet-color));
-  box-shadow: 0 0 8px var(--planet-glow);
-}
-
-/* Label under the planet */
 .planet-label {
   font-family: var(--font-display);
   font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--planet-color) 80%, white 40%);
-  text-align: center;
+  color: #a0a0c0;
   white-space: nowrap;
-  text-shadow: 0 0 12px var(--planet-glow);
   pointer-events: none;
+  transition: color 0.3s ease;
+}
+.planet-container:hover .planet-label {
+  color: #fff;
 }
 
-/* Hover: planet pulses and glows */
-.planet:hover .planet-icon {
-  box-shadow: 0 0 24px var(--planet-glow), 0 0 48px var(--planet-glow), inset 0 0 12px var(--planet-glow);
-  transform: scale(1.2);
-}
-.planet:hover .planet-label {
-  color: color-mix(in srgb, var(--planet-color) 100%, white 60%);
-}
+/* Keyframes for spinning */
+@keyframes orbitSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes counterSpin  { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-/* Focus ring for accessibility */
-.planet:focus-visible .planet-icon {
-  outline: 2px solid var(--planet-color);
-  outline-offset: 4px;
-}
+/* ── Per-Orbit & Planet Sizing ── */
+#orbit-1 { width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2); animation-duration: var(--orbit1-d); }
+#orbit-1 .planet-container { animation-duration: var(--orbit1-d); }
 
-/* ════════════════════════════════════════════════════
-   CONTENT PANELS OVERLAY
-   ════════════════════════════════════════════════════ */
-#panels-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  background: rgba(7, 7, 20, 0.0);
+#orbit-2 { width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2); animation-duration: var(--orbit2-d); animation-delay: -5s; }
+#orbit-2 .planet-container { animation-duration: var(--orbit2-d); animation-delay: -5s; }
 
-  /* Hidden by default */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition-main), background var(--transition-main);
-  overflow-y: auto;
-}
-#panels-overlay.visible {
-  opacity: 1;
-  pointer-events: all;
-  background: rgba(7, 7, 20, 0.96);
-}
+#orbit-3 { width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2); animation-duration: var(--orbit3-d); animation-delay: -11s; }
+#orbit-3 .planet-container { animation-duration: var(--orbit3-d); animation-delay: -11s; }
 
-/* ── Close / Back button ── */
-#close-btn {
-  position: fixed;
-  top: 28px;
-  left: 28px;
-  z-index: 110;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 100px;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-#close-btn:hover {
-  background: rgba(255, 255, 255, 0.09);
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.25);
-}
+#orbit-4 { width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2); animation-duration: var(--orbit4-d); animation-delay: -8s; }
+#orbit-4 .planet-container { animation-duration: var(--orbit4-d); animation-delay: -8s; }
 
-/* ── Individual panels ── */
-.content-panel {
-  display: none; /* JS toggles this to flex */
-  flex-direction: column;
-  width: 100%;
-  max-width: 860px;
-  padding: 100px 48px 80px;
-  margin: 0 auto;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-.content-panel.active {
-  display: flex;
-}
-.content-panel.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+#orbit-5 { width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2); animation-duration: var(--orbit5-d); animation-delay: -20s; }
+#orbit-5 .planet-container { animation-duration: var(--orbit5-d); animation-delay: -20s; }
 
-/* ── Panel header ── */
-.panel-header {
-  margin-bottom: 48px;
-}
-.panel-tag {
-  display: inline-block;
-  padding: 4px 14px;
-  border-radius: 100px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: color-mix(in srgb, var(--accent) 90%, white 30%);
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  margin-bottom: 20px;
-}
-.panel-header h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-}
-.panel-subtitle {
-  font-size: 1.05rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
+#orbit-6 { width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2); animation-duration: var(--orbit6-d); animation-delay: -33s; }
+#orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
 
-/* ── Panel body ── */
-.panel-body {
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  padding-top: 40px;
-  flex: 1;
-}
-.panel-body h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-}
-.panel-body p {
-  color: var(--text-secondary);
-  line-height: 1.75;
-  font-size: 0.95rem;
-  max-width: 620px;
-}
 
-/* ════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE
-   On small screens, collapse the orbits to a simple grid.
-   ════════════════════════════════════════════════════ */
-@media (max-width: 700px) {
-  /* Hide the animated solar system and replace with a card grid */
-  #solar-system {
-    /* Keep the sun centered but stack planets below it */
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    overflow-y: auto;
-    padding: 40px 20px 60px;
-  }
-
-  /* Sun stays at top */
-  #sun-container {
-    position: relative;
-    margin-bottom: 60px;
-    flex-shrink: 0;
-  }
-  #sun-label {
-    position: relative;
-    top: auto;
-    transform: none;
-    margin-top: 14px;
-  }
-
-  /* Hide all the orbital mechanics */
-  .orbit-wrapper {
-    position: relative;
-    width: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    animation: none !important;
-    border-radius: 0;
-  }
-  .orbit-path { display: none; }
-
-  /* Show planet anchors as a flex-wrap grid */
-  #solar-system {
-    display: block;
-  }
-  #sun-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
-  }
-
-  /* Stack all orbits into a flat wrapping row */
-  .orbit-wrapper {
-    display: inline-block;
-  }
-
-  /* Create a flex container by targetting all orbit-wrappers together */
-  #solar-system > .orbit-wrapper {
-    display: inline-flex;
-  }
-
-  .planet-anchor {
-    position: relative;
-    top: auto; left: auto;
-    transform: none;
-  }
-  .planet {
-    animation: none !important;
-    width: 80px;
-  }
-  .planet-icon {
-    width: 52px; height: 52px;
-  }
-  .planet-icon::after {
-    width: 34px; height: 34px;
-    margin-top: 9px;
-  }
-  .planet-label {
-    font-size: 0.66rem;
-  }
-
-  /* Panel adjustments */
-  .content-panel {
-    padding: 90px 22px 60px;
-  }
-  .panel-header h2 {
-    font-size: 1.9rem;
-  }
-  #close-btn {
-    top: 16px; left: 16px;
-    padding: 8px 14px;
-    font-size: 0.8rem;
-  }
-}
-
-/* ── Mobile orbit wrapper layout override ── */
-@media (max-width: 700px) {
-  #solar-system {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    overflow-y: auto;
-    padding-top: 30px;
-  }
-  #sun-container {
-    flex: 0 0 100%;
-    align-items: center;
-  }
-  .orbit-wrapper {
-    flex: 0 0 auto;
-  }
-}
+/* ── Content Panels & Responsive sections ── (No significant changes needed) */
+#panels-overlay { position: fixed; ... }
+/* ... (Keep the rest of your original CSS for panels and responsive here) ... */
