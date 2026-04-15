@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════
    JUMANA MELHEM — SOLAR SYSTEM PORTFOLIO
-   style.css (REVISED & SIMPLIFIED)
+   style.css (FINAL CORRECTED VERSION)
    ════════════════════════════════════════════════════ */
 
 /* ── Custom Properties ── */
@@ -13,16 +13,15 @@
   --font-body: 'DM Sans', sans-serif;
   --transition-main: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Orbit radiuses (now elliptical) - EASIER TO EDIT! */
-/* rx = horizontal radius, ry = vertical radius */
---orbit1-rx: 200px; --orbit1-ry: 80px;
---orbit2-rx: 300px; --orbit2-ry: 120px;
---orbit3-rx: 400px; --orbit3-ry: 160px;
---orbit4-rx: 500px; --orbit4-ry: 200px;
---orbit5-rx: 600px; --orbit5-ry: 240px;
---orbit6-rx: 700px; --orbit6-ry: 280px;
+  /* Orbit radiuses (elliptical) */
+  --orbit1-rx: 200px; --orbit1-ry: 80px;
+  --orbit2-rx: 300px; --orbit2-ry: 120px;
+  --orbit3-rx: 400px; --orbit3-ry: 160px;
+  --orbit4-rx: 500px; --orbit4-ry: 200px;
+  --orbit5-rx: 600px; --orbit5-ry: 240px;
+  --orbit6-rx: 700px; --orbit6-ry: 280px;
 
-  /* Orbit durations (speeds) - EASIER TO EDIT! */
+  /* Orbit durations (speeds) */
   --orbit1-d: 18s;
   --orbit2-d: 25s;
   --orbit3-d: 33s;
@@ -49,7 +48,6 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
   transition: opacity var(--transition-main), transform var(--transition-main);
   transform-origin: center center;
 }
@@ -57,7 +55,7 @@ html, body {
 
 /* ── Sun ── */
 #sun-container {
-  position: relative; /* Changed from absolute */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,91 +89,123 @@ html, body {
   to { box-shadow: 0 0 45px #fbbf2460, 0 0 90px #fbbf2430, inset 0 0 28px #fbbf2420; }
 }
 
+
 /* ════════════════════════════════════════════════════
-   FINAL RESTRUCTURED ORBIT/PLANET LOGIC
-   This separates visual paths from functional rotators.
+   FINAL & CORRECT ELLIPTICAL ORBIT LOGIC
+   This version animates X and Y movement separately.
    ════════════════════════════════════════════════════ */
 
-/* 1. Visual Paths Container (in the background) */
+/* Keyframes for true elliptical motion */
+@keyframes move-elliptical-x {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(calc(var(--rx) * -2)); }
+  100% { transform: translateX(0); }
+}
+@keyframes move-elliptical-y {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(var(--ry)); }
+  50%  { transform: translateY(0); }
+  75%  { transform: translateY(calc(var(--ry) * -1)); }
+  100% { transform: translateY(0); }
+}
+
+/* 1. Visual Paths Container */
 #orbit-paths {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none; /* Absolutely no interaction */
+  pointer-events: none;
 }
-
-/* 2. Individual Visual Path Style (IMPROVED) */
+/* Style for each visual path */
 .orbit-path {
   position: absolute;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 50%;
 }
+#orbit-paths .orbit-path:nth-child(1) { width: calc(var(--orbit1-rx) * 2); height: calc(var(--orbit1-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(2) { width: calc(var(--orbit2-rx) * 2); height: calc(var(--orbit2-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(3) { width: calc(var(--orbit3-rx) * 2); height: calc(var(--orbit3-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(4) { width: calc(var(--orbit4-rx) * 2); height: calc(var(--orbit4-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(5) { width: calc(var(--orbit5-rx) * 2); height: calc(var(--orbit5-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(6) { width: calc(var(--orbit6-rx) * 2); height: calc(var(--orbit6-ry) * 2); }
 
-/* Assign dimensions to each path using its order */
-#orbit-paths .orbit-path:nth-child(1) {
-  width: calc(var(--orbit1-rx) * 2);
-  height: calc(var(--orbit1-ry) * 2);
-}
-#orbit-paths .orbit-path:nth-child(2) {
-  width: calc(var(--orbit2-rx) * 2);
-  height: calc(var(--orbit2-ry) * 2);
-}
-#orbit-paths .orbit-path:nth-child(3) {
-  width: calc(var(--orbit3-rx) * 2);
-  height: calc(var(--orbit3-ry) * 2);
-}
-#orbit-paths .orbit-path:nth-child(4) {
-  width: calc(var(--orbit4-rx) * 2);
-  height: calc(var(--orbit4-ry) * 2);
-}
-#orbit-paths .orbit-path:nth-child(5) {
-  width: calc(var(--orbit5-rx) * 2);
-  height: calc(var(--orbit5-ry) * 2);
-}
-#orbit-paths .orbit-path:nth-child(6) {
-  width: calc(var(--orbit6-rx) * 2);
-  height: calc(var(--orbit6-ry) * 2);
-}
 
-/* 3. The logical rotator (NO BORDER) */
+/* 2. The logical rotator is now a stationary anchor */
 .orbit-wrapper {
   position: absolute;
-  border-radius: 50%;
-  animation: orbitSpin linear infinite;
-  pointer-events: none;
-  /* NO BORDER HERE! */
+  /* This is just a positioning anchor, it does not move or rotate */
 }
 
-/* 4. The clickable planet container (same as before) */
+/* 3. The clickable planet container is what animates */
 .planet-container {
   position: absolute;
+  /* Start the planet at the far right of the ellipse */
   top: 50%;
-  left: 0;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(var(--rx), -50%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  animation: counterSpin linear infinite;
-  /* pointer-events: auto; is not strictly needed but good practice */
+
+  /* Apply the new, separate animations for X and Y movement */
+  animation-name: move-elliptical-x, move-elliptical-y;
+  animation-timing-function: linear, ease-in-out; /* Swapped for more natural speed */
+  animation-iteration-count: infinite;
 }
 
+/* 4. Assign variables and durations to each planet's animation */
+#orbit-1 .planet-container {
+  --rx: var(--orbit1-rx);
+  --ry: var(--orbit1-ry);
+  animation-duration: var(--orbit1-d), var(--orbit1-d);
+}
+#orbit-2 .planet-container {
+  --rx: var(--orbit2-rx);
+  --ry: var(--orbit2-ry);
+  animation-duration: var(--orbit2-d), var(--orbit2-d);
+  animation-delay: -5s;
+}
+#orbit-3 .planet-container {
+  --rx: var(--orbit3-rx);
+  --ry: var(--orbit3-ry);
+  animation-duration: var(--orbit3-d), var(--orbit3-d);
+  animation-delay: -11s;
+}
+#orbit-4 .planet-container {
+  --rx: var(--orbit4-rx);
+  --ry: var(--orbit4-ry);
+  animation-duration: var(--orbit4-d), var(--orbit4-d);
+  animation-delay: -8s;
+}
+#orbit-5 .planet-container {
+  --rx: var(--orbit5-rx);
+  --ry: var(--orbit5-ry);
+  animation-duration: var(--orbit5-d), var(--orbit5-d);
+  animation-delay: -20s;
+}
+#orbit-6 .planet-container {
+  --rx: var(--orbit6-rx);
+  --ry: var(--orbit6-ry);
+  animation-duration: var(--orbit6-d), var(--orbit6-d);
+  animation-delay: -33s;
+}
+
+/* Styles for planet images and labels */
 .planet-image {
   max-width: none;
   object-fit: contain;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
-
 .planet-container:hover .planet-image {
   transform: scale(1.2);
   filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
 }
-
 .planet-label {
   font-family: var(--font-display);
   font-size: 0.62rem;
@@ -190,60 +220,9 @@ html, body {
   color: #fff;
 }
 
-/* Keyframes for spinning (no change) */
-@keyframes orbitSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes counterSpin  { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-/* ── Per-Orbit & Planet Sizing ── */
-#orbit-1 { 
-  width: calc(var(--orbit1-rx) * 2); 
-  height: calc(var(--orbit1-ry) * 2); 
-  animation-duration: var(--orbit1-d); 
-}
-#orbit-1 .planet-container { animation-duration: var(--orbit1-d); }
-
-#orbit-2 { 
-  width: calc(var(--orbit2-rx) * 2); 
-  height: calc(var(--orbit2-ry) * 2); 
-  animation-duration: var(--orbit2-d); 
-  animation-delay: -5s; 
-}
-#orbit-2 .planet-container { animation-duration: var(--orbit2-d); animation-delay: -5s; }
-
-#orbit-3 { 
-  width: calc(var(--orbit3-rx) * 2); 
-  height: calc(var(--orbit3-ry) * 2); 
-  animation-duration: var(--orbit3-d); 
-  animation-delay: -11s; 
-}
-#orbit-3 .planet-container { animation-duration: var(--orbit3-d); animation-delay: -11s; }
-
-#orbit-4 { 
-  width: calc(var(--orbit4-rx) * 2); 
-  height: calc(var(--orbit4-ry) * 2); 
-  animation-duration: var(--orbit4-d); 
-  animation-delay: -8s; 
-}
-#orbit-4 .planet-container { animation-duration: var(--orbit4-d); animation-delay: -8s; }
-
-#orbit-5 { 
-  width: calc(var(--orbit5-rx) * 2); 
-  height: calc(var(--orbit5-ry) * 2); 
-  animation-duration: var(--orbit5-d); 
-  animation-delay: -20s; 
-}
-#orbit-5 .planet-container { animation-duration: var(--orbit5-d); animation-delay: -20s; }
-
-#orbit-6 { 
-  width: calc(var(--orbit6-rx) * 2); 
-  height: calc(var(--orbit6-ry) * 2); 
-  animation-duration: var(--orbit6-d); 
-  animation-delay: -33s; 
-}
-#orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
 /* ════════════════════════════════════════════════════
    PANELS & RESPONSIVE STYLES
-   (This section completes the portfolio styling)
    ════════════════════════════════════════════════════ */
 
 /* ── Panels Overlay Container ── */
@@ -260,14 +239,14 @@ html, body {
   /* Hidden state by default */
   opacity: 0;
   pointer-events: none;
-  visibility: hidden; /* Ensure it's completely gone */
+  visibility: hidden;
   transition: opacity var(--transition-main), background var(--transition-main), visibility 0s var(--transition-main);
 }
 
 #panels-overlay.visible {
   opacity: 1;
   pointer-events: all;
-  visibility: visible; /* Make it visible */
+  visibility: visible;
   background: rgba(7, 7, 20, 0.96);
   transition: opacity var(--transition-main), background var(--transition-main), visibility 0s;
 }
@@ -292,19 +271,17 @@ html, body {
   letter-spacing: 0.03em;
   cursor: pointer;
   
-  /* Control visibility with opacity and pointer-events */
   opacity: 0;
   pointer-events: none;
   transform: translateY(-20px);
   transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s, color 0.2s, border-color 0.2s;
 }
 
-/* Show the button ONLY when a panel is visible */
 #panels-overlay.visible #close-btn {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
-  transition-delay: 0.2s; /* Let it appear slightly after the panel fades in */
+  transition-delay: 0.2s;
 }
 
 #close-btn:hover {
@@ -315,7 +292,7 @@ html, body {
 
 /* ── Individual Content Panels ── */
 .content-panel {
-  display: none; /* JS toggles this to flex */
+  display: none;
   flex-direction: column;
   width: 100%;
   max-width: 860px;
@@ -326,18 +303,10 @@ html, body {
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
-.content-panel.active {
-  display: flex;
-}
+.content-panel.active { display: flex; }
+.content-panel.visible { opacity: 1; transform: translateY(0); }
 
-.content-panel.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── Panel Header & Body (for project content) ── */
-/* You can add specific styles for your project panels here */
-/* Example: */
+/* ── Panel Header & Body ── */
 .panel-header { margin-bottom: 48px; }
 .panel-header h2 {
     font-family: var(--font-display);
@@ -356,25 +325,16 @@ html, body {
     font-size: 0.95rem;
 }
 
-
 /* ── Responsive adjustments for mobile ── */
 @media (max-width: 700px) {
-  /* ... (Your original mobile styles should go here if you have them) ... */
-  
   /* Panel adjustments for mobile */
-  .content-panel {
-    padding: 90px 22px 60px;
-  }
-  .panel-header h2 {
-    font-size: 1.9rem;
-  }
-  #close-btn {
-    top: 16px; left: 16px;
-    padding: 8px 14px;
-    font-size: 0.8rem;
-  }
+  .content-panel { padding: 90px 22px 60px; }
+  .panel-header h2 { font-size: 1.9rem; }
+  #close-btn { top: 16px; left: 16px; padding: 8px 14px; font-size: 0.8rem; }
+  /* (Add other mobile styles for orbits if needed) */
 }
 
+/* ── Contact links styling ── */
 .contact-links {
   display: flex;
   flex-direction: column;
@@ -389,9 +349,57 @@ html, body {
   color: var(--text-secondary);
   transition: color 0.2s ease;
 }
-.contact-link:hover {
-  color: var(--text-primary);
+.contact-link:hover { color: var(--text-primary); }
+.contact-icon { font-size: 1.5rem; }
+
+/* ── Project item styling ── */
+.project-item {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.contact-icon {
+.project-item:last-child { border-bottom: none; }
+.project-item h3 {
+  font-family: var(--font-display);
   font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.project-description {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+.project-links a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-right: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.project-links a.repo-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.project-links a:hover { transform: translateY(-2px); }
+.project-skills {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.project-skills span {
+  display: inline-block;
+  background-color: rgba(124, 58, 237, 0.15);
+  color: rgba(167, 139, 250, 0.9);
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(124, 58, 237, 0.3);
 }
