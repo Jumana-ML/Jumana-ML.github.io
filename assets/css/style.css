@@ -1,33 +1,36 @@
 /* ════════════════════════════════════════════════════
    JUMANA MELHEM — SOLAR SYSTEM PORTFOLIO
-   style.css  (v2 — fixed orbits + enhanced starfield)
+   style.css (FINAL CORRECTED VERSION)
    ════════════════════════════════════════════════════ */
 
 /* ── Custom Properties ── */
 :root {
   --bg: #070714;
   --sun-size: 140px;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
   --text-primary: #f1f0ff;
   --text-secondary: #8b8ab8;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
   --transition-main: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /*
-   * Orbit ellipse radii.
-   * rx = horizontal half-width  (wide axis)
-   * ry = vertical   half-height (narrow axis)
-   * ry ≈ 36% of rx gives a nice perspective-tilted look.
-   */
-  --o1-rx: 170px;  --o1-ry: 62px;
-  --o2-rx: 240px;  --o2-ry: 88px;
-  --o3-rx: 310px;  --o3-ry: 114px;
-  --o4-rx: 380px;  --o4-ry: 140px;
-  --o5-rx: 450px;  --o5-ry: 164px;
-  --o6-rx: 520px;  --o6-ry: 188px;
+  /* Orbit radiuses (elliptical) */
+  --orbit1-rx: 200px; --orbit1-ry: 80px;
+  --orbit2-rx: 300px; --orbit2-ry: 120px;
+  --orbit3-rx: 400px; --orbit3-ry: 160px;
+  --orbit4-rx: 500px; --orbit4-ry: 200px;
+  --orbit5-rx: 600px; --orbit5-ry: 240px;
+  --orbit6-rx: 700px; --orbit6-ry: 280px;
+
+  /* Orbit durations (speeds) */
+  --orbit1-d: 18s;
+  --orbit2-d: 25s;
+  --orbit3-d: 33s;
+  --orbit4-d: 42s;
+  --orbit5-d: 50s;
+  --orbit6-d: 60s;
 }
 
-/* ── Reset ── */
+/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%; height: 100%;
@@ -35,337 +38,220 @@ html, body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
 }
+#stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
-/* ════════════════════════════════════════════════════
-   STARFIELD CANVAS
-   Fixed behind everything — JS draws twinkling stars.
-   ════════════════════════════════════════════════════ */
-#stars {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ════════════════════════════════════════════════════
-   SOLAR SYSTEM WRAPPER
-   ════════════════════════════════════════════════════ */
+/* ── Solar System Wrapper ── */
 #solar-system {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity var(--transition-main), transform var(--transition-main);
   transform-origin: center center;
 }
-#solar-system.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.9);
-}
+#solar-system.hidden { opacity: 0; pointer-events: none; transform: scale(0.88); }
 
-/* ════════════════════════════════════════════════════
-   ORBIT PATH RINGS  (#orbit-paths container)
-
-   Each .orbit-path div is an ellipse centered on the
-   viewport center (50% / 50%) matching the size of its
-   corresponding orbit-wrapper.
-   ════════════════════════════════════════════════════ */
-#orbit-paths {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-#orbit-paths .orbit-path {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(180, 170, 255, 0.09);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* Subtle shimmer on the rings */
-  box-shadow: 0 0 8px rgba(120, 100, 255, 0.04);
-}
-
-#orbit-paths .orbit-path:nth-child(1) { width: calc(var(--o1-rx)*2); height: calc(var(--o1-ry)*2); }
-#orbit-paths .orbit-path:nth-child(2) { width: calc(var(--o2-rx)*2); height: calc(var(--o2-ry)*2); }
-#orbit-paths .orbit-path:nth-child(3) { width: calc(var(--o3-rx)*2); height: calc(var(--o3-ry)*2); }
-#orbit-paths .orbit-path:nth-child(4) { width: calc(var(--o4-rx)*2); height: calc(var(--o4-ry)*2); }
-#orbit-paths .orbit-path:nth-child(5) { width: calc(var(--o5-rx)*2); height: calc(var(--o5-ry)*2); }
-#orbit-paths .orbit-path:nth-child(6) { width: calc(var(--o6-rx)*2); height: calc(var(--o6-ry)*2); }
-
-/* ════════════════════════════════════════════════════
-   SUN
-   ════════════════════════════════════════════════════ */
+/* ── Sun ── */
 #sun-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 10;
 }
-
 #sun-glow-ring {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(var(--sun-size) + 56px);
-  height: calc(var(--sun-size) + 56px);
-  transform: translate(-50%, -50%);
+  width: calc(var(--sun-size) + 40px);
+  height: calc(var(--sun-size) + 40px);
   border-radius: 50%;
-  background: radial-gradient(circle, #fbbf2438 0%, transparent 68%);
-  animation: sunPulse 3.2s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
+  background: radial-gradient(circle, #fbbf2430 0%, transparent 70%);
+  animation: sunPulse 3s ease-in-out infinite;
 }
-
 #sun {
   width: var(--sun-size);
   height: var(--sun-size);
   border-radius: 50%;
   overflow: hidden;
   border: 2.5px solid #fbbf2460;
-  box-shadow:
-    0 0 32px #fbbf2442,
-    0 0 75px #fbbf2422,
-    inset 0 0 22px #fbbf2418;
-  flex-shrink: 0;
+  box-shadow: 0 0 30px #fbbf2440, 0 0 60px #fbbf2420, inset 0 0 20px #fbbf2415;
   animation: sunGlow 4s ease-in-out infinite alternate;
-  position: relative;
-  z-index: 2;
 }
-
-#profile-pic {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-#sun-label {
-  text-align: center;
-  margin-top: 14px;
-  position: relative;
-  z-index: 2;
-}
-#name {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #fef9ee;
-  white-space: nowrap;
-}
-#title {
-  font-size: 0.74rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #fbbf2480;
-  margin-top: 4px;
-  white-space: nowrap;
-}
+#profile-pic { width: 100%; height: 100%; object-fit: cover; }
+#sun-label { text-align: center; margin-top: 16px; }
+#name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: #fef9ee; }
+#title { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: #fbbf2490; margin-top: 3px; }
 
 @keyframes sunPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.65; }
-  50%       { transform: translate(-50%, -50%) scale(1.22); opacity: 1;    }
+  50% { transform: scale(1.18); opacity: 1; }
 }
 @keyframes sunGlow {
-  from { box-shadow: 0 0 28px #fbbf2440, 0 0 58px #fbbf241a, inset 0 0 18px #fbbf2412; }
-  to   { box-shadow: 0 0 52px #fbbf2468, 0 0 110px #fbbf2435, inset 0 0 32px #fbbf2424; }
+  to { box-shadow: 0 0 45px #fbbf2460, 0 0 90px #fbbf2430, inset 0 0 28px #fbbf2420; }
 }
+
 
 /* ════════════════════════════════════════════════════
-   ORBIT WRAPPERS
-
-   HOW THE ELLIPSE ORBIT WORKS:
-   ────────────────────────────
-   1. .orbit-wrapper is an invisible ellipse div,
-      absolutely positioned with its center on the sun
-      via top:50%, left:50% + negative margins.
-
-   2. CSS animation rotates the wrapper 360° (orbitSpin).
-
-   3. .planet-container sits at the right edge of that
-      ellipse (left:100%, top:50%) so it's always at the
-      tip of the rotating shape.
-
-   4. .planet-container counter-rotates at the same speed
-      so its contents (image + label) always stay upright.
-
-   Result: the planet traces a perfect elliptical path.
+   FINAL & CORRECT ELLIPTICAL ORBIT LOGIC
+   This version animates X and Y movement separately.
    ════════════════════════════════════════════════════ */
+
+/* Keyframes for true elliptical motion */
+@keyframes move-elliptical-x {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(calc(var(--rx) * -2)); }
+  100% { transform: translateX(0); }
+}
+@keyframes move-elliptical-y {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(var(--ry)); }
+  50%  { transform: translateY(0); }
+  75%  { transform: translateY(calc(var(--ry) * -1)); }
+  100% { transform: translateY(0); }
+}
+
+/* 1. Visual Paths Container */
+#orbit-paths {
+  position: absolute;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+/* Style for each visual path */
+.orbit-path {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+#orbit-paths .orbit-path:nth-child(1) { width: calc(var(--orbit1-rx) * 2); height: calc(var(--orbit1-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(2) { width: calc(var(--orbit2-rx) * 2); height: calc(var(--orbit2-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(3) { width: calc(var(--orbit3-rx) * 2); height: calc(var(--orbit3-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(4) { width: calc(var(--orbit4-rx) * 2); height: calc(var(--orbit4-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(5) { width: calc(var(--orbit5-rx) * 2); height: calc(var(--orbit5-ry) * 2); }
+#orbit-paths .orbit-path:nth-child(6) { width: calc(var(--orbit6-rx) * 2); height: calc(var(--orbit6-ry) * 2); }
+
+
+/* 2. The logical rotator is now a stationary anchor */
 .orbit-wrapper {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  animation-name: orbitSpin;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  z-index: 5;
+  /* This is just a positioning anchor, it does not move or rotate */
 }
 
-#orbit-1 {
-  width:  calc(var(--o1-rx) * 2);
-  height: calc(var(--o1-ry) * 2);
-  margin-left: calc(var(--o1-rx) * -1);
-  margin-top:  calc(var(--o1-ry) * -1);
-  animation-duration: 14s;
-}
-#orbit-2 {
-  width:  calc(var(--o2-rx) * 2);
-  height: calc(var(--o2-ry) * 2);
-  margin-left: calc(var(--o2-rx) * -1);
-  margin-top:  calc(var(--o2-ry) * -1);
-  animation-duration: 20s;
-  animation-delay: -5s;
-}
-#orbit-3 {
-  width:  calc(var(--o3-rx) * 2);
-  height: calc(var(--o3-ry) * 2);
-  margin-left: calc(var(--o3-rx) * -1);
-  margin-top:  calc(var(--o3-ry) * -1);
-  animation-duration: 28s;
-  animation-delay: -9s;
-}
-#orbit-4 {
-  width:  calc(var(--o4-rx) * 2);
-  height: calc(var(--o4-ry) * 2);
-  margin-left: calc(var(--o4-rx) * -1);
-  margin-top:  calc(var(--o4-ry) * -1);
-  animation-duration: 36s;
-  animation-delay: -14s;
-}
-#orbit-5 {
-  width:  calc(var(--o5-rx) * 2);
-  height: calc(var(--o5-ry) * 2);
-  margin-left: calc(var(--o5-rx) * -1);
-  margin-top:  calc(var(--o5-ry) * -1);
-  animation-duration: 46s;
-  animation-delay: -22s;
-}
-#orbit-6 {
-  width:  calc(var(--o6-rx) * 2);
-  height: calc(var(--o6-ry) * 2);
-  margin-left: calc(var(--o6-rx) * -1);
-  margin-top:  calc(var(--o6-ry) * -1);
-  animation-duration: 58s;
-  animation-delay: -30s;
-}
-
-@keyframes orbitSpin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* ── Planet Container ──
-   RIGHT edge of the ellipse = left:100%, top:50%
-   Translate(-50%,-50%) keeps it centered on that point.
-   Counter-rotates to stay upright at all times. */
+/* 3. The clickable planet container is what animates */
 .planet-container {
   position: absolute;
+  /* Start the planet at the far right of the ellipse */
   top: 50%;
-  left: 100%;
-  /* Combine centering + counter-rotation in one transform */
-  transform: translate(-50%, -50%) rotate(0deg);
+  left: 50%;
+  transform: translate(var(--rx), -50%);
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
-  padding: 8px;
 
-  animation-name: counterSpin;
-  animation-timing-function: linear;
+  /* Apply the new, separate animations for X and Y movement */
+  animation-name: move-elliptical-x, move-elliptical-y;
+  animation-timing-function: linear, ease-in-out; /* Swapped for more natural speed */
   animation-iteration-count: infinite;
-
-  transition: filter 0.3s ease;
 }
 
-/* Counter-spin must match its parent orbit exactly */
-#orbit-1 .planet-container { animation-duration: 14s; }
-#orbit-2 .planet-container { animation-duration: 20s; }
-#orbit-3 .planet-container { animation-duration: 28s; }
-#orbit-4 .planet-container { animation-duration: 36s; }
-#orbit-5 .planet-container { animation-duration: 46s; }
-#orbit-6 .planet-container { animation-duration: 58s; }
-
-@keyframes counterSpin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(-360deg); }
+/* 4. Assign variables and durations to each planet's animation */
+#orbit-1 .planet-container {
+  --rx: var(--orbit1-rx);
+  --ry: var(--orbit1-ry);
+  animation-duration: var(--orbit1-d), var(--orbit1-d);
+}
+#orbit-2 .planet-container {
+  --rx: var(--orbit2-rx);
+  --ry: var(--orbit2-ry);
+  animation-duration: var(--orbit2-d), var(--orbit2-d);
+  animation-delay: -5s;
+}
+#orbit-3 .planet-container {
+  --rx: var(--orbit3-rx);
+  --ry: var(--orbit3-ry);
+  animation-duration: var(--orbit3-d), var(--orbit3-d);
+  animation-delay: -11s;
+}
+#orbit-4 .planet-container {
+  --rx: var(--orbit4-rx);
+  --ry: var(--orbit4-ry);
+  animation-duration: var(--orbit4-d), var(--orbit4-d);
+  animation-delay: -8s;
+}
+#orbit-5 .planet-container {
+  --rx: var(--orbit5-rx);
+  --ry: var(--orbit5-ry);
+  animation-duration: var(--orbit5-d), var(--orbit5-d);
+  animation-delay: -20s;
+}
+#orbit-6 .planet-container {
+  --rx: var(--orbit6-rx);
+  --ry: var(--orbit6-ry);
+  animation-duration: var(--orbit6-d), var(--orbit6-d);
+  animation-delay: -33s;
 }
 
-.planet-container:hover {
-  filter: brightness(1.35) drop-shadow(0 0 14px rgba(200, 180, 255, 0.5));
-}
-
-/* ── Planet Image ── */
+/* Styles for planet images and labels */
 .planet-image {
-  display: block;
-  border-radius: 50%;
-  object-fit: cover;
-  pointer-events: none;
-  transition: transform 0.35s ease;
+  max-width: none;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
-.planet-container:hover .planet-image { transform: scale(1.12); }
-
-/* Individual planet sizes */
-#orbit-1 .planet-image { width: 50px;  height: 50px; }
-#orbit-2 .planet-image { width: 62px;  height: 62px; }
-#orbit-3 .planet-image { width: 70px;  height: 70px; }
-#orbit-4 .planet-image { width: 78px;  height: 78px; }
-#orbit-5 .planet-image { width: 84px;  height: 84px; }
-#orbit-6 .planet-image { width: 88px;  height: 88px; }
-
-/* ── Planet Label ── */
+.planet-container:hover .planet-image {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.6));
+}
 .planet-label {
   font-family: var(--font-display);
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(210, 205, 255, 0.78);
-  text-align: center;
+  color: #a0a0c0;
   white-space: nowrap;
-  text-shadow: 0 0 10px rgba(130, 110, 255, 0.55);
   pointer-events: none;
   transition: color 0.3s ease;
 }
-.planet-container:hover .planet-label { color: #ffffff; }
+.planet-container:hover .planet-label {
+  color: #fff;
+}
+
 
 /* ════════════════════════════════════════════════════
-   CONTENT PANELS OVERLAY
+   PANELS & RESPONSIVE STYLES
    ════════════════════════════════════════════════════ */
+
+/* ── Panels Overlay Container ── */
 #panels-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
   background: rgba(7, 7, 20, 0.0);
+  overflow-y: auto;
+
+  /* Hidden state by default */
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-main), background var(--transition-main);
-  overflow-y: auto;
+  visibility: hidden;
+  transition: opacity var(--transition-main), background var(--transition-main), visibility 0s var(--transition-main);
 }
+
 #panels-overlay.visible {
   opacity: 1;
   pointer-events: all;
-  background: rgba(7, 7, 20, 0.97);
+  visibility: visible;
+  background: rgba(7, 7, 20, 0.96);
+  transition: opacity var(--transition-main), background var(--transition-main), visibility 0s;
 }
 
-/* ── Back Button ── */
+/* ── Close / Back button (IMPROVED) ── */
 #close-btn {
   position: fixed;
   top: 28px;
@@ -374,7 +260,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 10px 18px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 100px;
@@ -384,15 +270,27 @@ html, body {
   font-weight: 500;
   letter-spacing: 0.03em;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s, color 0.2s, border-color 0.2s;
 }
+
+#panels-overlay.visible #close-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
 #close-btn:hover {
   background: rgba(255, 255, 255, 0.09);
   color: var(--text-primary);
   border-color: rgba(255, 255, 255, 0.25);
 }
 
-/* ── Individual Panels ── */
+/* ── Individual Content Panels ── */
 .content-panel {
   display: none;
   flex-direction: column;
@@ -401,182 +299,107 @@ html, body {
   padding: 100px 48px 80px;
   margin: 0 auto;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(28px);
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
-.content-panel.active  { display: flex; }
+
+.content-panel.active { display: flex; }
 .content-panel.visible { opacity: 1; transform: translateY(0); }
 
-/* ── Panel Header ── */
-.panel-header {
-  margin-bottom: 40px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
+/* ── Panel Header & Body ── */
+.panel-header { margin-bottom: 48px; }
 .panel-header h2 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 12px;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    color: var(--text-primary);
 }
-.panel-subtitle {
-  font-size: 1rem;
-  font-weight: 300;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.panel-body {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 40px;
+    flex: 1;
 }
-
-/* ── Panel Body ── */
-.panel-body { flex: 1; }
-.panel-body h3 {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--text-primary);
-}
-.panel-body p,
-.project-description {
-  color: var(--text-secondary);
-  line-height: 1.75;
-  font-size: 0.93rem;
-  max-width: 640px;
+.panel-body p {
+    color: var(--text-secondary);
+    line-height: 1.75;
+    font-size: 0.95rem;
 }
 
-/* ── Project Cards ── */
-.project-item {
-  padding: 26px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-.project-item:last-child { border-bottom: none; }
-
-.project-links { margin: 14px 0 10px; }
-.repo-link {
-  display: inline-block;
-  padding: 6px 16px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: #a78bfa;
-  border: 1px solid #a78bfa50;
-  border-radius: 100px;
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
-}
-.repo-link:hover { background: #a78bfa22; color: #c4b5fd; }
-
-.project-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 10px;
-}
-.project-skills span {
-  padding: 3px 11px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 100px;
+/* ── Responsive adjustments for mobile ── */
+@media (max-width: 700px) {
+  /* Panel adjustments for mobile */
+  .content-panel { padding: 90px 22px 60px; }
+  .panel-header h2 { font-size: 1.9rem; }
+  #close-btn { top: 16px; left: 16px; padding: 8px 14px; font-size: 0.8rem; }
+  /* (Add other mobile styles for orbits if needed) */
 }
 
-/* ── Contact Links ── */
+/* ── Contact links styling ── */
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-top: 8px;
+  gap: 20px;
 }
 .contact-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 16px;
-  padding: 18px 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
   text-decoration: none;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.contact-link:hover { color: var(--text-primary); }
+.contact-icon { font-size: 1.5rem; }
+
+/* ── Project item styling ── */
+.project-item {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.project-item:last-child { border-bottom: none; }
+.project-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
   color: var(--text-primary);
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  margin-bottom: 12px;
 }
-.contact-link:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateX(5px);
+.project-description {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 700px;
+  margin-bottom: 20px;
 }
-.contact-icon { font-size: 1.3rem; }
-.contact-text { font-size: 0.93rem; font-weight: 400; }
-
-/* ════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE  (≤ 700px)
-   Collapse animated orbits → simple vertical list.
-   ════════════════════════════════════════════════════ */
-@media (max-width: 700px) {
-  html, body { overflow: auto; }
-
-  #solar-system {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 36px 16px 60px;
-  }
-
-  /* Sun: static at the top */
-  #sun-container {
-    position: relative;
-    top: auto; left: auto;
-    transform: none;
-    margin-bottom: 40px;
-  }
-
-  /* Hide animated rings */
-  #orbit-paths { display: none; }
-
-  /* Flatten orbit-wrappers */
-  .orbit-wrapper {
-    position: relative !important;
-    top: auto !important; left: auto !important;
-    width: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    animation: none !important;
-    border-radius: 0;
-    display: block;
-  }
-
-  /* Planet container: row layout, no spin */
-  .planet-container {
-    position: relative !important;
-    top: auto !important; left: auto !important;
-    transform: none !important;
-    animation: none !important;
-    flex-direction: row;
-    gap: 14px;
-    padding: 14px 18px;
-    width: 230px;
-    margin-bottom: 10px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-  }
-  .planet-container:hover {
-    background: rgba(255,255,255,0.07);
-    filter: none;
-  }
-
-  .planet-image { width: 42px !important; height: 42px !important; flex-shrink: 0; }
-  .planet-label { font-size: 0.75rem; text-align: left; white-space: normal; }
-
-  /* Panels */
-  .content-panel { padding: 88px 20px 60px; }
-  .panel-header h2 { font-size: 1.75rem; }
-  #close-btn { top: 16px; left: 16px; padding: 8px 14px; font-size: 0.8rem; }
+.project-links a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-right: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.project-links a.repo-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.project-links a:hover { transform: translateY(-2px); }
+.project-skills {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.project-skills span {
+  display: inline-block;
+  background-color: rgba(124, 58, 237, 0.15);
+  color: rgba(167, 139, 250, 0.9);
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(124, 58, 237, 0.3);
 }
