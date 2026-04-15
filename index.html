@@ -104,43 +104,106 @@
   </div><!-- /solar-system -->
 
 
-  <!-- ░░ CONTENT PANELS OVERLAY ░░ (No changes needed here, but included for completeness) -->
-  <div id="panels-overlay" aria-hidden="true">
-    <button id="close-btn" aria-label="Back to solar system">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 10H5M5 10L10 5M5 10L10 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Back
-    </button>
-    <div id="foundations-panel" class="<div id="contact-panel" class="content-panel" role="region" aria-label="Contact">
-  <div class="panel-header">
-    <h2>Get in Touch</h2>
-    <p class="panel-subtitle">I'm open to collaborations and new opportunities.</p>
-  </div>
-  <div class="panel-body">
-    <div class="contact-links">
-      <a href="mailto:your-email@example.com" class="contact-link">
-        <span class="contact-icon">📧</span>
-        <span class="contact-text">dujadark@gmail.com</span>
-      </a>
-      <a href="https://github.com/Jumana-ML" target="_blank" class="contact-link">
-        <span class="contact-icon">💻</span>
-        <span class="contact-text">GitHub Profile</span>
-      </a>
-      <a href="[https://www.linkedin.com/in/jumanamelhem/]" target="_blank" class="contact-link">
-        <span class="contact-icon">🌐</span>
-        <span class="contact-text">LinkedIn Profile</span>
-      </a>
+<!-- ░░ CONTENT PANELS OVERLAY ░░ -->
+<div id="panels-overlay" aria-hidden="true">
+
+  <!-- Botón de "Back" que se comparte entre todos los paneles -->
+  <button id="close-btn" aria-label="Back to solar system">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 10H5M5 10L10 5M5 10L10 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </button>
+
+  <!-- Panel 1: Foundations -->
+  <div id="foundations-panel" class="content-panel" role="region" aria-label="Foundations Projects">
+    <!-- ⬇️ ضعي هنا محتوى مشاريع Foundations ⬇️ -->
+    <div class="panel-header">
+      <h2>Core Foundations</h2>
+      <p class="panel-subtitle">Environment, Pipelines, and Databases</p>
+    </div>
+    <div class="panel-body">
+      <!-- مثال لمشروع -->
+      <div class="project-item">
+        <h3>Development Environment & Git Workflow</h3>
+        <p class="project-description">
+          Configured a reproducible Python development environment using virtual environments and managed code versions with Git.
+        </p>
+        <div class="project-links">
+          <a href="#" target="_blank" class="repo-link">View Repo</a>
+        </div>
+        <div class="project-skills">
+          <span>Python</span>
+          <span>Git</span>
+          <span>GitHub</span>
+        </div>
+      </div>
+      <!-- يمكنك إضافة المزيد من المشاريع هنا -->
     </div>
   </div>
-</div>" role="region" aria-label="Foundations Projects"></div>
-    <div id="mlnlp-panel" class="content-panel" role="region" aria-label="ML & NLP Projects"></div>
-    <div id="retrieval-panel" class="content-panel" role="region" aria-label="Retrieval & KG Projects"></div>
-    <div id="deployment-panel" class="content-panel" role="region" aria-label="Deployment Projects"></div>
-    <div id="capstone-panel" class="content-panel" role="region" aria-label="Capstone Project"></div>
-    <div id="contact-panel" class="content-panel" role="region" aria-label="Contact"></div>
-  </div><!-- /panels-overlay -->
 
+  <!-- Panel 2: ML & NLP -->
+  <div id="mlnlp-panel" class="content-panel" role="region" aria-label="ML & NLP Projects">
+    <!-- ⬇️ ضعي هنا محتوى مشاريع ML & NLP ⬇️ -->
+    <div class="panel-header">
+        <h2>Machine Learning & NLP</h2>
+        <p class="panel-subtitle">Project details will be added soon.</p>
+    </div>
+  </div>
+
+  <!-- Panel 3: Retrieval & KG -->
+  <div id="retrieval-panel" class="content-panel" role="region" aria-label="Retrieval & KG Projects">
+    <!-- ⬇️ ضعي هنا محتوى مشاريع Retrieval & KG ⬇️ -->
+    <div class="panel-header">
+        <h2>Retrieval & Knowledge Graphs</h2>
+        <p class="panel-subtitle">Project details will be added soon.</p>
+    </div>
+  </div>
+
+  <!-- Panel 4: Deployment -->
+  <div id="deployment-panel" class="content-panel" role="region" aria-label="Deployment Projects">
+    <!-- ⬇️ ضعي هنا محتوى مشاريع Deployment ⬇️ -->
+    <div class="panel-header">
+        <h2>Deployment</h2>
+        <p class="panel-subtitle">Project details will be added soon.</p>
+    </div>
+  </div>
+
+  <!-- Panel 5: Capstone -->
+  <div id="capstone-panel" class="content-panel" role="region" aria-label="Capstone Project">
+    <!-- ⬇️ ضعي هنا محتوى مشروع Capstone ⬇️ -->
+    <div class="panel-header">
+        <h2>Capstone Project</h2>
+        <p class="panel-subtitle">Project details will be added soon.</p>
+    </div>
+  </div>
+
+  <!-- Panel 6: Contact -->
+  <div id="contact-panel" class="content-panel" role="region" aria-label="Contact">
+    <!-- ✅ هذا هو المحتوى الذي أضفته بشكل صحيح -->
+    <div class="panel-header">
+      <h2>Get in Touch</h2>
+      <p class="panel-subtitle">I'm open to collaborations and new opportunities.</p>
+    </div>
+    <div class="panel-body">
+      <div class="contact-links">
+        <a href="mailto:dujadark@gmail.com" class="contact-link">
+          <span class="contact-icon">📧</span>
+          <span class="contact-text">dujadark@gmail.com</span>
+        </a>
+        <a href="https://github.com/Jumana-ML" target="_blank" class="contact-link">
+          <span class="contact-icon">💻</span>
+          <span class="contact-text">GitHub Profile</span>
+        </a>
+        <a href="https://www.linkedin.com/in/jumanamelhem/" target="_blank" class="contact-link">
+          <span class="contact-icon">🌐</span>
+          <span class="contact-text">LinkedIn Profile</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /panels-overlay -->
   <!-- Make sure this path is correct -->
   <script src="assets/js/script.js"></script>
 </body>
