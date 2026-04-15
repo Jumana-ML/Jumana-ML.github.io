@@ -54,13 +54,13 @@ transform-origin: center center;
 }
 #solar-system.hidden { opacity: 0; pointer-events: none; transform: scale(0.88); }
 
-/* ── Sun ── /
+/* ── Sun ── */
 #sun-container {
-position: relative; / Changed from absolute */
-display: flex;
-flex-direction: column;
-align-items: center;
-z-index: 10;
+  position: relative; /* Changed from absolute */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
 }
 #sun-glow-ring {
 position: absolute;
@@ -96,49 +96,49 @@ FINAL RESTRUCTURED ORBIT/PLANET LOGIC
 This separates visual paths from functional rotators.
 ════════════════════════════════════════════════════ */
 
-/* 1. Visual Paths Container (in the background) /
+/* 1. Visual Paths Container (in the background) */
 #orbit-paths {
-position: absolute;
-width: 100%;
-height: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
-pointer-events: none; / Absolutely no interaction */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Absolutely no interaction */
 }
 
 /* 2. Individual Visual Path Style */
 .orbit-path {
-position: absolute;
-width: calc(var(--radius) * 2);
-height: calc(var(--radius) * 2);
-border: 1px solid rgba(255, 255, 255, 0.06);
-border-radius: 50%;
+  position: absolute;
+  width: calc(var(--radius) * 2);
+  height: calc(var(--radius) * 2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
 }
 
-/* 3. The logical rotator (NO BORDER) /
-
+/* 3. The logical rotator (NO BORDER) */
 .orbit-wrapper {
-position: absolute;
-border-radius: 50%;
-animation: orbitSpin linear infinite;
-pointer-events: none;
+  position: absolute;
+  border-radius: 50%;
+  animation: orbitSpin linear infinite;
+  pointer-events: none;
 }
 
-/* 4. The clickable planet container (same as before) /
+/* 4. The clickable planet container (same as before) */
 .planet-container {
-position: absolute;
-top: 50%;
-left: 0;
-transform: translateY(-50%);
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 8px;
-cursor: pointer;
-animation: counterSpin linear infinite;
-/ pointer-events: auto; is not strictly needed but good practice */
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  animation: counterSpin linear infinite;
+  /* pointer-events: auto; is not strictly needed but good practice */
 }
+
 
 .planet-image {
 max-width: none;
