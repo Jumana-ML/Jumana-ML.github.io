@@ -321,3 +321,24 @@ html, body {
     font-size: 0.8rem;
   }
 }
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+.contact-link:hover {
+  color: var(--text-primary);
+}
+.contact-icon {
+  font-size: 1.5rem;
+}
