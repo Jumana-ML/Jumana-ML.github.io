@@ -13,13 +13,14 @@
   --font-body: 'DM Sans', sans-serif;
   --transition-main: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Orbit radiuses (now circular) - EASIER TO EDIT! */
-  --orbit1-r: 170px;
-  --orbit2-r: 250px;
-  --orbit3-r: 330px;
-  --orbit4-r: 410px;
-  --orbit5-r: 490px;
-  --orbit6-r: 570px;
+  /* Orbit radiuses (now elliptical) - EASIER TO EDIT! */
+/* rx = horizontal radius, ry = vertical radius */
+--orbit1-rx: 200px; --orbit1-ry: 80px;
+--orbit2-rx: 300px; --orbit2-ry: 120px;
+--orbit3-rx: 400px; --orbit3-ry: 160px;
+--orbit4-rx: 500px; --orbit4-ry: 200px;
+--orbit5-rx: 600px; --orbit5-ry: 240px;
+--orbit6-rx: 700px; --orbit6-ry: 280px;
 
   /* Orbit durations (speeds) - EASIER TO EDIT! */
   --orbit1-d: 18s;
@@ -106,13 +107,37 @@ html, body {
   pointer-events: none; /* Absolutely no interaction */
 }
 
-/* 2. Individual Visual Path Style */
+/* 2. Individual Visual Path Style (IMPROVED) */
 .orbit-path {
   position: absolute;
-  width: calc(var(--radius) * 2);
-  height: calc(var(--radius) * 2);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 50%;
+}
+
+/* Assign dimensions to each path using its order */
+#orbit-paths .orbit-path:nth-child(1) {
+  width: calc(var(--orbit1-rx) * 2);
+  height: calc(var(--orbit1-ry) * 2);
+}
+#orbit-paths .orbit-path:nth-child(2) {
+  width: calc(var(--orbit2-rx) * 2);
+  height: calc(var(--orbit2-ry) * 2);
+}
+#orbit-paths .orbit-path:nth-child(3) {
+  width: calc(var(--orbit3-rx) * 2);
+  height: calc(var(--orbit3-ry) * 2);
+}
+#orbit-paths .orbit-path:nth-child(4) {
+  width: calc(var(--orbit4-rx) * 2);
+  height: calc(var(--orbit4-ry) * 2);
+}
+#orbit-paths .orbit-path:nth-child(5) {
+  width: calc(var(--orbit5-rx) * 2);
+  height: calc(var(--orbit5-ry) * 2);
+}
+#orbit-paths .orbit-path:nth-child(6) {
+  width: calc(var(--orbit6-rx) * 2);
+  height: calc(var(--orbit6-ry) * 2);
 }
 
 /* 3. The logical rotator (NO BORDER) */
@@ -169,25 +194,53 @@ html, body {
 @keyframes orbitSpin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes counterSpin  { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 
-/* ── Per-Orbit & Planet Sizing (no change to this section, but included for context) ── */
-#orbit-1 { width: calc(var(--orbit1-r) * 2); height: calc(var(--orbit1-r) * 2); animation-duration: var(--orbit1-d); }
+/* ── Per-Orbit & Planet Sizing ── */
+#orbit-1 { 
+  width: calc(var(--orbit1-rx) * 2); 
+  height: calc(var(--orbit1-ry) * 2); 
+  animation-duration: var(--orbit1-d); 
+}
 #orbit-1 .planet-container { animation-duration: var(--orbit1-d); }
 
-#orbit-2 { width: calc(var(--orbit2-r) * 2); height: calc(var(--orbit2-r) * 2); animation-duration: var(--orbit2-d); animation-delay: -5s; }
+#orbit-2 { 
+  width: calc(var(--orbit2-rx) * 2); 
+  height: calc(var(--orbit2-ry) * 2); 
+  animation-duration: var(--orbit2-d); 
+  animation-delay: -5s; 
+}
 #orbit-2 .planet-container { animation-duration: var(--orbit2-d); animation-delay: -5s; }
 
-#orbit-3 { width: calc(var(--orbit3-r) * 2); height: calc(var(--orbit3-r) * 2); animation-duration: var(--orbit3-d); animation-delay: -11s; }
+#orbit-3 { 
+  width: calc(var(--orbit3-rx) * 2); 
+  height: calc(var(--orbit3-ry) * 2); 
+  animation-duration: var(--orbit3-d); 
+  animation-delay: -11s; 
+}
 #orbit-3 .planet-container { animation-duration: var(--orbit3-d); animation-delay: -11s; }
 
-#orbit-4 { width: calc(var(--orbit4-r) * 2); height: calc(var(--orbit4-r) * 2); animation-duration: var(--orbit4-d); animation-delay: -8s; }
+#orbit-4 { 
+  width: calc(var(--orbit4-rx) * 2); 
+  height: calc(var(--orbit4-ry) * 2); 
+  animation-duration: var(--orbit4-d); 
+  animation-delay: -8s; 
+}
 #orbit-4 .planet-container { animation-duration: var(--orbit4-d); animation-delay: -8s; }
 
-#orbit-5 { width: calc(var(--orbit5-r) * 2); height: calc(var(--orbit5-r) * 2); animation-duration: var(--orbit5-d); animation-delay: -20s; }
+#orbit-5 { 
+  width: calc(var(--orbit5-rx) * 2); 
+  height: calc(var(--orbit5-ry) * 2); 
+  animation-duration: var(--orbit5-d); 
+  animation-delay: -20s; 
+}
 #orbit-5 .planet-container { animation-duration: var(--orbit5-d); animation-delay: -20s; }
 
-#orbit-6 { width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2); animation-duration: var(--orbit6-d); animation-delay: -33s; }
+#orbit-6 { 
+  width: calc(var(--orbit6-rx) * 2); 
+  height: calc(var(--orbit6-ry) * 2); 
+  animation-duration: var(--orbit6-d); 
+  animation-delay: -33s; 
+}
 #orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
-
 /* ════════════════════════════════════════════════════
    PANELS & RESPONSIVE STYLES
    (This section completes the portfolio styling)
