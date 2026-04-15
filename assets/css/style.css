@@ -322,3 +322,71 @@ color: #fff;
 
 #orbit-6 { width: calc(var(--orbit6-r) * 2); height: calc(var(--orbit6-r) * 2); animation-duration: var(--orbit6-d); animation-delay: -33s; }
 #orbit-6 .planet-container { animation-duration: var(--orbit6-d); animation-delay: -33s; }
+
+/* ════════════════════════════════════════════════════
+   PROJECT CONTENT STYLES
+   (Inside the content panels)
+   ════════════════════════════════════════════════════ */
+
+.project-item {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.project-description {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 700px; /* To keep lines readable */
+  margin-bottom: 20px;
+}
+
+.project-links a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-right: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.project-links a.repo-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.project-links a:hover {
+  transform: translateY(-2px);
+}
+
+.project-skills {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-skills span {
+  display: inline-block;
+  background-color: rgba(124, 58, 237, 0.15); /* A subtle purple background */
+  color: rgba(167, 139, 250, 0.9); /* A lighter purple text */
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
