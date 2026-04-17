@@ -1,184 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jumana Melhem — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | AI & ML Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --jungle-teal: #6b9080;
+            --muted-teal: #a4c3b2;
+            --frozen-water: #cce3de;
+            --azure-mist: #eaf4f4;
+            --mint-cream: #f6fff8;
+            --text-dark: #2d3748;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--mint-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* تعديل الهيدر لإضافة الصورة */
+        header {
+            background-color: white;
+            padding: 5rem 2rem;
+            border-bottom: 2px solid var(--frozen-water);
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            text-align: left;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%; /* لجعل الصورة دائرية */
+            object-fit: cover; /* لضمان عدم تمدد الصورة */
+            border: 6px solid var(--frozen-water);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            flex-shrink: 0; /* لمنع الصورة من الصغر عند وجود نص طويل */
+        }
+
+        .header-text h1 {
+            color: var(--jungle-teal);
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        .header-text p {
+            max-width: 600px;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* تنسيق الأقسام والمشاريع */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: var(--jungle-teal);
+            border-left: 5px solid var(--muted-teal);
+            padding-left: 15px;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--frozen-water);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(107, 144, 128, 0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--jungle-teal);
+            font-size: 1.25rem;
+        }
+
+        .tag {
+            background-color: var(--azure-mist);
+            color: var(--jungle-teal);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .repo-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: var(--muted-teal);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background-color: var(--azure-mist);
+            text-align: center;
+            padding: 3rem;
+            margin-top: 5rem;
+        }
+
+        .contact-links a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: var(--jungle-teal);
+            font-weight: 600;
+        }
+
+        /* تعديلات للموبايل */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            .header-text h1 { font-size: 2.2rem; }
+            .profile-img { width: 150px; height: 150px; }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- ░░ STARFIELD CANVAS ░░ -->
-  <canvas id="stars"></canvas>
-
-  <!-- ░░ SOLAR SYSTEM VIEW ░░ -->
-  <div id="solar-system">
-    
-    <!-- Visual Orbit Paths Container -->
-    <div id="orbit-paths">
-      <div class="orbit-path"></div>
-      <div class="orbit-path"></div>
-      <div class="orbit-path"></div>
-      <div class="orbit-path"></div>
-      <div class="orbit-path"></div>
-      <div class="orbit-path"></div>
-    </div>
-
-    <!-- Central sun with profile picture -->
-    <div id="sun-container">
-      <div id="sun-glow-ring"></div>
-      <div id="sun">
-        <img src="Jumana.jpg" alt="Jumana Melhem" id="profile-pic" />
-      </div>
-      <div id="sun-label">
-        <h1 id="name">Jumana Melhem</h1>
-        <p id="title">AI / ML Engineer</p>
-      </div>
-    </div>
-
-    <!-- ░░ ORBITS & PLANETS ░░ -->
-    <!-- Planet 1: Foundations -->
-    <div class="orbit-wrapper" id="orbit-1">
-      <div class="planet-container" data-panel="foundations-panel">
-        <img src="assets/images/1.png" alt="Foundations" class="planet-image" data-size="100">
-        <span class="planet-label">Foundations</span>
-      </div>
-    </div>
-
-    <!-- Planet 2: ML & NLP -->
-    <div class="orbit-wrapper" id="orbit-2">
-      <div class="planet-container" data-panel="mlnlp-panel">
-        <img src="assets/images/2.png" alt="ML & NLP" class="planet-image" data-size="130">
-        <span class="planet-label">ML & NLP</span>
-      </div>
-    </div>
-
-    <!-- Planet 3: Retrieval & KG -->
-    <div class="orbit-wrapper" id="orbit-3">
-      <div class="planet-container" data-panel="retrieval-panel">
-        <img src="assets/images/3.png" alt="Retrieval & KG" class="planet-image" data-size="150">
-        <span class="planet-label">Retrieval & KG</span>
-      </div>
-    </div>
-
-    <!-- Planet 4: Deployment -->
-    <div class="orbit-wrapper" id="orbit-4">
-      <div class="planet-container" data-panel="deployment-panel">
-        <img src="assets/images/4.png" alt="Deployment" class="planet-image" data-size="170">
-        <span class="planet-label">Deployment</span>
-      </div>
-    </div>
-
-    <!-- Planet 5: Capstone -->
-    <div class="orbit-wrapper" id="orbit-5">
-      <div class="planet-container" data-panel="capstone-panel">
-        <img src="assets/images/5.png" alt="Capstone" class="planet-image" data-size="190">
-        <span class="planet-label">Capstone</span>
-      </div>
-    </div>
-
-    <!-- Planet 6: Contact -->
-    <div class="orbit-wrapper" id="orbit-6">
-      <div class="planet-container" data-panel="contact-panel">
-        <img src="assets/images/6.png" alt="Contact" class="planet-image" data-size="200">
-        <span class="planet-label">Contact</span>
-      </div>
-    </div>
-
-  </div><!-- /solar-system -->
-
-
-  <!-- ░░ CONTENT PANELS OVERLAY ░░ -->
-  <div id="panels-overlay" aria-hidden="true">
-
-    <button id="close-btn" aria-label="Back to solar system">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 10H5M5 10L10 5M5 10L10 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Back
-    </button>
-
-    <!-- Panel 1: Foundations -->
-    <div id="foundations-panel" class="content-panel" role="region" aria-label="Foundations Projects">
-      <div class="panel-header">
-        <h2>Core Foundations</h2>
-        <p class="panel-subtitle">Environment, Pipelines, and Databases</p>
-      </div>
-      <div class="panel-body">
-        <div class="project-item">
-          <h3>Development Environment & Git Workflow</h3>
-          <p class="project-description">
-            Configured a reproducible Python development environment using virtual environments and managed code versions with Git.
-          </p>
-          <div class="project-links">
-            <a href="#" target="_blank" class="repo-link">View Repo</a>
-          </div>
-          <div class="project-skills">
-            <span>Python</span>
-            <span>Git</span>
-            <span>GitHub</span>
-          </div>
+<header>
+    <div class="header-container">
+        <!-- ضع رابط صورتك هنا -->
+        <img src="your-image.jpg" alt="Your Name" class="profile-img">
+        
+        <div class="header-text">
+            <h1>Your Name</h1>
+            <p>
+                I am a recent graduate in <strong>[Computer Science / Electrical Engineering]</strong> from [University Name] in Jordan. 
+                Building expertise in applied AI and ML systems through the AI.SPIRE program.
+            </p>
         </div>
-      </div>
     </div>
+</header>
 
-    <!-- Panel 2: ML & NLP -->
-    <div id="mlnlp-panel" class="content-panel" role="region" aria-label="ML & NLP Projects">
-      <div class="panel-header">
-          <h2>Machine Learning & NLP</h2>
-          <p class="panel-subtitle">Project details will be added soon.</p>
-      </div>
-    </div>
-
-    <!-- Panel 3: Retrieval & KG -->
-    <div id="retrieval-panel" class="content-panel" role="region" aria-label="Retrieval & KG Projects">
-      <div class="panel-header">
-          <h2>Retrieval & Knowledge Graphs</h2>
-          <p class="panel-subtitle">Project details will be added soon.</p>
-      </div>
-    </div>
-
-    <!-- Panel 4: Deployment -->
-    <div id="deployment-panel" class="content-panel" role="region" aria-label="Deployment Projects">
-      <div class="panel-header">
-          <h2>Deployment</h2>
-          <p class="panel-subtitle">Project details will be added soon.</p>
-      </div>
-    </div>
-
-    <!-- Panel 5: Capstone -->
-    <div id="capstone-panel" class="content-panel" role="region" aria-label="Capstone Project">
-      <div class="panel-header">
-          <h2>Capstone Project</h2>
-          <p class="panel-subtitle">Project details will be added soon.</p>
-      </div>
-    </div>
-
-    <!-- Panel 6: Contact -->
-    <div id="contact-panel" class="content-panel" role="region" aria-label="Contact">
-      <div class="panel-header">
-        <h2>Get in Touch</h2>
-        <p class="panel-subtitle">I'm open to collaborations and new opportunities.</p>
-      </div>
-      <div class="panel-body">
-        <div class="contact-links">
-          <a href="mailto:dujadark@gmail.com" class="contact-link">
-            <span class="contact-icon">📧</span>
-            <span class="contact-text">dujadark@gmail.com</span>
-          </a>
-          <a href="https://github.com/Jumana-ML" target="_blank" class="contact-link">
-            <span class="contact-icon">💻</span>
-            <span class="contact-text">GitHub Profile</span>
-          </a>
-          <a href="https://www.linkedin.com/in/jumanamelhem/" target="_blank" class="contact-link">
-            <span class="contact-icon">🌐</span>
-            <span class="contact-text">LinkedIn Profile</span>
-          </a>
+<div class="container">
+    <h2 class="section-title">Machine Learning & NLP</h2>
+    <div class="category-grid">
+        <div class="card">
+            <h3>Natural Language Processing</h3>
+            <p>Built an end-to-end NLP pipeline for sentiment analysis and text classification.</p>
+            <div class="skills-tag">
+                <span class="tag">spaCy</span> <span class="tag">PyTorch</span> <span class="tag">Transformers</span>
+            </div>
+            <a href="#" class="repo-link">View Repository →</a>
         </div>
-      </div>
+        
+        <div class="card">
+            <h3>Retrieval-Augmented Generation</h3>
+            <p>Implementing RAG systems using vector databases for context-aware AI.</p>
+            <div class="skills-tag">
+                <span class="tag">Weaviate</span> <span class="tag">Embeddings</span> <span class="tag">LLMs</span>
+            </div>
+            <a href="#" class="repo-link">View Repository →</a>
+        </div>
     </div>
 
-  </div><!-- 
+    <!-- يمكنك تكرار قسم "card" لبقية المشاريع كما في الكود السابق -->
+</div>
+
+<footer>
+    <h3>Let's Connect</h3>
+    <div class="contact-links">
+        <a href="https://github.com/your-username">GitHub</a>
+        <a href="https://linkedin.com/in/your-profile">LinkedIn</a>
+        <a href="mailto:your.email@example.com">Email</a>
+    </div>
+</footer>
+
+</body>
+</html>
