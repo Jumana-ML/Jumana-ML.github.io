@@ -107,6 +107,14 @@
             font-size: 1.25rem;
         }
 
+        .card p {
+            flex-grow: 1; /* لجعل الأزرار في الأسفل دائماً على نفس المستوى */
+        }
+
+        .skills-tag {
+            margin-bottom: 15px;
+        }
+
         .tag {
             background-color: var(--azure-mist);
             color: var(--jungle-teal);
@@ -121,7 +129,7 @@
 
         .repo-link {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: auto;
             text-decoration: none;
             color: var(--muted-teal);
             font-weight: bold;
@@ -158,9 +166,7 @@
 
 <header>
     <div class="header-container">
-        <!-- ضع رابط صورتك هنا -->
-        <img src="Jumana.jpg" alt="Your Name" class="profile-img">
-        
+        <img src="Jumana.jpg" alt="Jumana Melhem" class="profile-img">
         <div class="header-text">
             <h1>Jumana Melhem</h1>
             <p>
@@ -180,7 +186,9 @@
             <h3>Natural Language Processing</h3>
             <p>Built an end-to-end NLP pipeline for sentiment analysis and text classification.</p>
             <div class="skills-tag">
-                <span class="tag">spaCy</span> <span class="tag">PyTorch</span> <span class="tag">Transformers</span>
+                <span class="tag">spaCy</span> 
+                <span class="tag">PyTorch</span> 
+                <span class="tag">Transformers</span>
             </div>
             <a href="#" class="repo-link">View Repository →</a>
         </div>
@@ -190,24 +198,27 @@
             <h3>Retrieval-Augmented Generation</h3>
             <p>Implementing RAG systems using vector databases for context-aware AI.</p>
             <div class="skills-tag">
-                <span class="tag">Weaviate</span> <span class="tag">Embeddings</span> <span class="tag">LLMs</span>
+                <span class="tag">Weaviate</span> 
+                <span class="tag">Embeddings</span> 
+                <span class="tag">LLMs</span>
             </div>
             <a href="#" class="repo-link">View Repository →</a>
         </div>
 
-        <!-- البطاقة الثالثة (الجديدة لمشروع اليوم) -->
+        <!-- البطاقة الثالثة (الجديدة) -->
         <div class="card">
             <h3>Production RAG: Observability</h3>
             <p>Engineered a comprehensive observability layer (Prometheus metrics, structured logging) for a FastAPI RAG backend, and developed an automated evaluation harness to prevent hallucinations.</p>
             <div class="skills-tag">
-                <span class="tag">FastAPI</span> <span class="tag">Prometheus</span> <span class="tag">Docker</span> <span class="tag">Pytest</span>
+                <span class="tag">FastAPI</span> 
+                <span class="tag">Prometheus</span> 
+                <span class="tag">Docker</span> 
+                <span class="tag">Pytest</span>
             </div>
             <a href="https://github.com/jumana-ml/m11-l11" target="_blank" class="repo-link">View Repository →</a>
         </div>
 
     </div>
-</div>
-    <!-- يمكنك تكرار قسم "card" لبقية المشاريع كما في الكود السابق -->
 </div>
 
 <footer>
